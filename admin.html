@@ -1,28 +1,27 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - Post</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel</title>
   <link rel="stylesheet" href="style.css" />
-  <script defer src="firebase.js"></script>
-  <script defer src="admin.js"></script>
 </head>
 <body>
-  <h1>🔐 Admin Panel</h1>
-  <form id="login-form">
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-  </form>
-  <div id="post-form-container" style="display:none;">
-    <form id="post-form">
-      <input type="text" id="title" placeholder="Title" required />
-      <input type="text" id="imageUrl" placeholder="Image URL (optional)" />
-      <textarea id="caption" placeholder="Caption"></textarea>
-      <button type="submit">Post</button>
-    </form>
-  </div>
-  <script type="module" src="admin.js"></script>
+  <h1>🛠️ Admin Upload</h1>
+  <div class="form-container">
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button id="loginBtn">Login</button>
 
+    <div id="uploadForm" style="display:none;">
+      <input type="file" id="imageFile" />
+      <input type="text" id="title" placeholder="Title" />
+      <textarea id="caption" placeholder="Caption"></textarea>
+      <button id="uploadBtn">Upload Post</button>
+    </div>
+  </div>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="admin.js"></script>
 </body>
 </html>
