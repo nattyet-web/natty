@@ -1,53 +1,30 @@
-import { auth, db } from './firebase.js';
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { db } from "./firebase.js";
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-const loginBtn = document.getElementById("loginBtn");
-const uploadBtn = document.getElementById("uploadBtn");
+document.getElementById("postBtn").addEventListener("click", async () => {
+  const title = document.getElementById("title").value.trim();
+  const caption = document.getElementById("caption").value.trim();
+  const imageUrl = document.getElementById("imageUrl").value.trim();
 
-let isAuthenticated = false;
-
-loginBtn.addEventListener("click", async () => {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    alert("Login successful");
-    isAuthenticated = true;
-  } catch (error) {
-    alert("Login failed: " + error.message);
-  }
-});
-
-uploadBtn.addEventListener("click", async () => {
-  if (!isAuthenticated) {
-    alert("Please login first.");
-    return;
-  }
-
-  const imageUrl = document.getElementById("imageUrl").value;
-  const caption = document.getElementById("caption").value;
-  const description = document.getElementById("description").value;
-
-  if (!imageUrl || !caption) {
-    alert("Please provide image URL and caption.");
+  if (!title || !imageUrl) {
+    alert("Title and Image URL are required.");
     return;
   }
 
   try {
     await addDoc(collection(db, "posts"), {
-      imageUrl,
+      title,
       caption,
-      description,
+      imageUrl,
       createdAt: serverTimestamp()
     });
 
     alert("Post uploaded!");
-    document.getElementById("imageUrl").value = '';
-    document.getElementById("caption").value = '';
-    document.getElementById("description").value = '';
+    document.getElementById("title").value = "";
+    document.getElementById("caption").value = "";
+    document.getElementById("imageUrl").value = "";
   } catch (err) {
-    alert("Upload failed: " + err.message);
+    console.error("Error adding post: ", err);
+    alert("Failed to post.");
   }
 });
