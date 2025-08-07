@@ -6,49 +6,66 @@ body, html {
   color: white;
 }
 
+/* Title */
 h2 {
   text-align: center;
   color: white;
+  margin-top: 20px;
 }
 
+/* Grid container for posts */
 .feed {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 20px;
-  max-width: 600px;
-  margin: 0 auto;
+  justify-content: center;
   padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* Individual post card */
 .post {
   background-color: #333;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  padding: 10px;
+  width: 30%; /* 3 per row on desktop */
+  box-sizing: border-box;
   border: 1px solid #666;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+}
+
+.post:hover {
+  transform: scale(1.02);
 }
 
 .post img {
   max-width: 100%;
-  border-radius: 6px;
+  height: auto;
+  border-radius: 8px;
+  display: block;
 }
 
 .post h3 {
   margin: 10px 0 5px;
   color: #fff;
+  font-size: 1.1em;
 }
 
 .post p {
   margin: 0;
   color: #ccc;
+  font-size: 0.95em;
 }
 
+/* Responsive: 1 post per row on mobile */
 @media (max-width: 768px) {
-  .feed {
-    padding: 10px;
+  .post {
+    width: 100%;
   }
 
-  .post {
-    padding: 12px;
+  h2 {
+    font-size: 1.5em;
   }
 }
