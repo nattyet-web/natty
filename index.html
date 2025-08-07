@@ -2,13 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>🛹 Natty IG Feed</title>
+  <title>My Feed</title>
   <link rel="stylesheet" href="style.css">
-  <script type="module" src="firebase.js"></script>
-  <script type="module" src="index.js" defer></script>
 </head>
 <body>
-  <h2>📸 Latest Posts</h2>
-  <div id="feed" class="feed"></div>
+  <div id="preloader">
+    <div id="loader"></div>
+  </div>
+
+  <input type="text" id="searchBar" placeholder="Search posts...">
+
+  <h2>My Feed</h2>
+  <div class="feed" id="posts"></div>
+
+  <div class="pagination" id="pagination"></div>
+
+  <footer>
+    <p>&copy; 2025 My Instagram-like Web</p>
+  </footer>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="index.js"></script>
 </body>
 </html>
