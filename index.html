@@ -1,26 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Feed</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mega-celeb</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="preloader">
-    <div id="loader"></div>
+
+<!-- Preloader -->
+<div id="preloader">
+  <div id="loader"></div>
+</div>
+
+<!-- Top Nav -->
+<div class="container1">
+  <div class="logo">
+    <h1>Mega-celeb</h1>
   </div>
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Celebs</a></li>
+      <li><a href="#">Onlyfan</a></li>
+      <li><a href="#">Onlyfan Links</a></li>
+      <li><a href="#">About us</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+</div>
 
-  <input type="text" id="searchBar" placeholder="Search posts...">
+<!-- Mobile Nav -->
+<div class="topnav">
+  <a href="javascript:void(0);" class="icon" onclick="toggleNav()">&#9776;</a>
+  <div id="myLinks">
+    <a href="#">Home</a>
+    <a href="#">Celebs</a>
+    <a href="#">Onlyfan</a>
+    <a href="#">Onlyfan Links</a>
+    <a href="#">About us</a>
+    <a href="#">Contact</a>
+  </div>
+</div>
 
-  <h2>My Feed</h2>
-  <div class="feed" id="posts"></div>
+<!-- Search -->
+<input type="text" id="searchBar" placeholder="Search...">
 
-  <div class="pagination" id="pagination"></div>
+<!-- Feed -->
+<div class="feed" id="feed"></div>
 
-  <footer>
-    <p>&copy; 2025 My Instagram-like Web</p>
-  </footer>
-  <script type="module" src="firebase.js"></script>
-  <script type="module" src="index.js"></script>
+<!-- Footer -->
+<footer>
+  <div class="footer23-social">
+    <span class="social-item"><a href="#">Instagram</a></span>
+    <span class="social-item"><a href="#">Twitter</a></span>
+  </div>
+  <div class="footer-link">
+    <a href="#">Terms</a>
+    <a href="#">Privacy</a>
+    <a href="#">DMCA</a>
+  </div>
+</footer>
+
+<script type="module" src="index.js"></script>
 </body>
 </html>
