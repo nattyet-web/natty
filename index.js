@@ -4,6 +4,11 @@ import { collection, query, orderBy, getDocs } from "https://www.gstatic.com/fir
 const feedContainer = document.getElementById("feed");
 
 async function loadPosts() {
+  if (!feedContainer) {
+    console.error("❌ No #feed element found.");
+    return;
+  }
+
   const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
   const snapshot = await getDocs(q);
 
@@ -12,6 +17,9 @@ async function loadPosts() {
     const postElement = createPostElement(post);
     feedContainer.appendChild(postElement);
   });
+
+  // Hide preloader after loading
+  document.getElementById("preloader")?.classList.add("hide-preloader");
 }
 
 function createPostElement(post) {
@@ -36,3 +44,9 @@ function createPostElement(post) {
 }
 
 loadPosts();
+
+// Mobile menu toggle
+function toggleNav() {
+  const links = document.getElementById("myLinks");
+  links.style.display = links.style.display === "block" ? "none" : "block";
+}
