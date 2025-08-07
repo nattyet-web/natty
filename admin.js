@@ -1,30 +1,75 @@
 import { db } from "./firebase.js";
-import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-document.getElementById("postBtn").addEventListener("click", async () => {
-  const title = document.getElementById("title").value.trim();
-  const caption = document.getElementById("caption").value.trim();
-  const imageUrl = document.getElementById("imageUrl").value.trim();
+const postsEl = document.getElementById("posts");
+const searchBar = document.getElementById("searchBar");
+const paginationEl = document.getElementById("pagination");
 
-  if (!title || !imageUrl) {
-    alert("Title and Image URL are required.");
-    return;
-  }
+let allPosts = [];
+let currentPage = 1;
+const postsPerPage = 6;
 
-  try {
-    await addDoc(collection(db, "posts"), {
-      title,
-      caption,
-      imageUrl,
-      createdAt: serverTimestamp()
-    });
-
-    alert("Post uploaded!");
-    document.getElementById("title").value = "";
-    document.getElementById("caption").value = "";
-    document.getElementById("imageUrl").value = "";
-  } catch (err) {
-    console.error("Error adding post: ", err);
-    alert("Failed to post.");
-  }
+window.addEventListener("load", () => {
+  const preloader = document.getElementById("preloader");
+  preloader.classList.add("hide-preloader");
 });
+
+async function fetchPosts() {
+  const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+  const querySnapshot = await getDocs(q);
+  allPosts = querySnapshot.docs.map(doc => doc.data());
+  renderPosts();
+}
+
+function renderPosts() {
+  const search = searchBar.value.toLowerCase();
+  const filteredPosts = allPosts.filter(post =>
+    post.title.toLowerCase().includes(search) ||
+    post.caption.toLowerCase().includes(search)
+  );
+
+  const start = (currentPage - 1) * postsPerPage;
+  const paginated = filteredPosts.slice(start, start + postsPerPage);
+
+  postsEl.innerHTML = "";
+  paginated.forEach(post => {
+    const div = document.createElement("div");
+    div.className = "post";
+    div.innerHTML = `
+      <img src="${post.imageUrl}" alt="Post image">
+      <h3>${post.title}</h3>
+      <p>${post.caption}</p>
+    `;
+    postsEl.appendChild(div);
+  });
+
+  renderPagination(filteredPosts.length);
+}
+
+function renderPagination(totalPosts) {
+  const totalPages = Math.ceil(totalPosts / postsPerPage);
+  paginationEl.innerHTML = "";
+
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    if (i === currentPage) btn.classList.add("active");
+    btn.addEventListener("click", () => {
+      currentPage = i;
+      renderPosts();
+    });
+    paginationEl.appendChild(btn);
+  }
+}
+
+searchBar.addEventListener("input", () => {
+  currentPage = 1;
+  renderPosts();
+});
+
+fetchPosts();
