@@ -1,27 +1,38 @@
 import { db } from './firebase.js';
-import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-const feed = document.getElementById('feed');
+const feedContainer = document.getElementById("feed");
 
 async function loadPosts() {
-  const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
-  const querySnapshot = await getDocs(q);
+  const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
 
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-
-    const postEl = document.createElement("div");
-    postEl.classList.add("post");
-    postEl.innerHTML = `
-      <img src="${data.imageUrl}" alt="${data.title}" />
-      <div class="post-content">
-        <h2>${data.title}</h2>
-        <p>${data.caption}</p>
-        <small>${new Date(data.timestamp.toDate()).toLocaleString()}</small>
-      </div>
-    `;
-    feed.appendChild(postEl);
+  snapshot.forEach(doc => {
+    const post = doc.data();
+    const postElement = createPostElement(post);
+    feedContainer.appendChild(postElement);
   });
+}
+
+function createPostElement(post) {
+  const container = document.createElement("div");
+  container.classList.add("post");
+
+  const img = document.createElement("img");
+  img.src = post.imageUrl;
+  img.alt = post.caption;
+
+  const caption = document.createElement("h3");
+  caption.textContent = post.caption;
+
+  const desc = document.createElement("p");
+  desc.textContent = post.description;
+
+  container.appendChild(img);
+  container.appendChild(caption);
+  container.appendChild(desc);
+
+  return container;
 }
 
 loadPosts();
