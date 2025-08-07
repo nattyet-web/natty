@@ -1,44 +1,53 @@
-// admin.js
-import { db, auth } from './firebase.js';
-import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { auth, db, storage } from './firebase.js';
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import {
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
 
-const loginForm = document.getElementById('login-form');
-const postFormContainer = document.getElementById('post-form-container');
-const postForm = document.getElementById('post-form');
+const loginBtn = document.getElementById("loginBtn");
+const uploadForm = document.getElementById("uploadForm");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
 
-loginForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  signInWithEmailAndPassword(auth, email, password)
+loginBtn.addEventListener("click", () => {
+  signInWithEmailAndPassword(auth, email.value, password.value)
     .then(() => {
-      loginForm.style.display = 'none';
-      postFormContainer.style.display = 'block';
+      uploadForm.style.display = "block";
     })
-    .catch(err => alert("Login failed"));
+    .catch(err => alert("Login failed: " + err.message));
 });
 
-onAuthStateChanged(auth, user => {
-  if (user) {
-    loginForm.style.display = 'none';
-    postFormContainer.style.display = 'block';
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+  const file = document.getElementById("imageFile").files[0];
+  const title = document.getElementById("title").value;
+  const caption = document.getElementById("caption").value;
+
+  if (!file || !title || !caption) {
+    alert("Please fill in all fields.");
+    return;
   }
-});
 
-postForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const title = document.getElementById('title').value;
-  const imageUrl = document.getElementById('imageUrl').value;
-  const caption = document.getElementById('caption').value;
+  const fileRef = ref(storage, 'images/' + file.name);
+  await uploadBytes(fileRef, file);
+  const imageUrl = await getDownloadURL(fileRef);
 
-  await addDoc(collection(db, 'posts'), {
+  await addDoc(collection(db, "posts"), {
     title,
-    imageUrl,
     caption,
-    timestamp: serverTimestamp(),
+    imageUrl,
+    timestamp: serverTimestamp()
   });
 
-  postForm.reset();
-  alert("Posted!");
+  alert("Post uploaded!");
+  location.reload();
 });
