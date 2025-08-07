@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Admin Upload</title>
-  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="./firebase.js"></script>
+  <script type="module" src="./admin.js"></script>
 </head>
 <body>
-  <h1>🛠️ Admin Upload</h1>
-
+  <h2>🔧 Admin Upload</h2>
   <input type="email" id="email" placeholder="Email" />
   <input type="password" id="password" placeholder="Password" />
   <button id="loginBtn">Login</button>
-
   <hr />
-
-  <input type="file" id="imageFile" />
-  <input type="text" id="title" placeholder="Post Title" />
-  <textarea id="description" placeholder="Post Description"></textarea>
+  
+  <input type="text" id="imageUrl" placeholder="Paste Image URL here" />
+  <input type="text" id="caption" placeholder="Caption" />
+  <textarea id="description" placeholder="Description"></textarea>
   <button id="uploadBtn">Upload Post</button>
-
-  <script type="module" src="./firebase.js"></script>
-  <script type="module" src="./admin.js"></script>
 </body>
 </html>
